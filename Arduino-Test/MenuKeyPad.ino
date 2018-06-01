@@ -39,7 +39,6 @@ void setupKeyPad(){
 
 void startKeyPad(){    
     char key = keypad.getKey();
-
     if (key) {
         Serial.println(key);
     }
@@ -53,6 +52,9 @@ void startKeyPad(){
     }
 }
 
+
+
+String hhmmBuffer="__:__";
 // Taking care of some special events.
 void keypadEvent(KeypadEvent key){
     keyEventPressed=true;
@@ -89,7 +91,11 @@ void keypadEvent(KeypadEvent key){
       case HOLD:{
           if (key == '*') {
               blink = true;    // Blink the LED when holding the * key.
+             printLcd("comida 1 HH MM ",hhmmBuffer);
+              keypad.addEventListener(subMenuSetHour);        
+           
           }
+          
           break;
         }
       default:      Serial.flush();       
@@ -97,6 +103,28 @@ void keypadEvent(KeypadEvent key){
     }
 
     return;
+}
+
+int index=0;
+void subMenuSetHour(KeypadEvent key){
+    switch (keypad.getState()){      
+      case PRESSED:{
+               if(key!='#'){                  
+                  if(index==2){index++;} //Esto es para que se saltee el ":"
+                  hhmmBuffer[index]=key;   
+                  printLcdLine2(hhmmBuffer);               
+                  index++;
+                  if(index==6) printLcd(hhmmBuffer,"guardado");
+               }
+               Serial.println(hhmmBuffer);
+        }
+       case HOLD:{
+          if (key == '#') {
+              blink = true;    // Blink the LED when holding the * key.
+              sweepServo();
+          }
+       }
+    }
 }
 
 
