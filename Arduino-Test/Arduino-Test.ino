@@ -6,22 +6,15 @@ bool keyEventPressed=false;
 void setup(){
   Serial.begin(9600);
   setupLCD();
-  setupKeyPad();
-  setupServo();
+  //setupKeyPad();
+  //setupServo();
+  setupMenuBotonera();
 }
 
 void loop() {
   //startMenu();
-  startKeyPad();
-
-  //Print milisegundos
-  if(keyEventPressed==false){
-    String mil=String(millis()/1000);
-    Serial.println(mil);
-    printLcdLine2(mil);  
-  }
-
-  
+ // startKeyPad();
+ startMenuBotonera();
   
 }
 

@@ -8,7 +8,7 @@
  || #
  || link: https://www.arduino.cc/en/Reference/LiquidCrystal
  */
-
+/*
 const byte ROWS = 4; //four rows
 const byte COLS = 3; //three columns
 char keys[ROWS][COLS] = {
@@ -125,6 +125,6 @@ void subMenuSetHour(KeypadEvent key){
           }
        }
     }
-}
+}*/
 
 
