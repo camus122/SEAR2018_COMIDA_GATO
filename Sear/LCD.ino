@@ -52,6 +52,7 @@ void setupLCD(){
   lcd.begin(16, 2);
   // Print a message to the LCD.
   lcd.print("hello, world!");
+//  lcd.display();
 }
 
 void startMenu() {
@@ -62,15 +63,16 @@ void startMenu() {
   lcdStr(String(millis() / 1000));
 }
 void printLcdLine1(String cadena){
+//  lcd.clear();
   lcd.setCursor(0, 0);
   // print the number of seconds since reset:  
-//  lcd.clear();
-  lcdStr(cadena);  
+  
+  lcdStr(cadena);    
 }
 void printLcdLine2(String cadena){
-  lcd.setCursor(0, 1);
-  // print the number of seconds since reset:  
 //  lcd.clear();
+  lcd.setCursor(0, 1);
+  // print the number of seconds since reset:    
   lcdStr(cadena);  
 }
 void printLcd(String cadena1,String cadena2){
@@ -80,8 +82,12 @@ void printLcd(String cadena1,String cadena2){
 
 void lcdStr(String str)
 {
+//  lcd.clear();
+  Serial.println(str);
   lcd.print(str);
   for(int i = str.length(); i<16;i++) lcd.print(' ');
+  
+  
 }
 
 
