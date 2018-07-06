@@ -25,11 +25,15 @@ byte colPins[COLS] = {39, 41, 43}; //connect to the column pinouts of the keypad
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 //Constantes de pins de botones
-const byte PIN_FLECHA_ABAJO = 1; 
-const byte PIN_FLECHA_ARRIBA = 2; 
-const byte PIN_SELECCION = 3; 
-const byte PIN_CANCELAR = 4; 
-const byte PIN_ACEPTAR = 5; 
+const byte PIN_FLECHA_ABAJO = 26; 
+const byte PIN_FLECHA_ARRIBA = 24; 
+const byte PIN_SELECCION = 28; 
+const byte PIN_CANCELAR = 30; 
+const byte PIN_ACEPTAR = 32; 
+
+//PULL_DOWN
+const byte PIN_LINEA_DOWN = 22;
+
 
 //Estados iniciales del menu
 const byte cantidadMaximaMenuPrimario=3; 
@@ -51,13 +55,15 @@ String horaComida4="__:__";
 
 
 void setupMenuBotonera(){
-// pinMode(PIN_FLECHA_ABAJO, INPUT); 
-// pinMode(PIN_FLECHA_ARRIBA, INPUT); 
-// pinMode(PIN_SELECCION, INPUT); 
-// pinMode(PIN_CANCELAR, INPUT); 
-// pinMode(PIN_ACEPTAR, INPUT);  
-
-
+ pinMode(PIN_FLECHA_ABAJO, INPUT_PULLUP); 
+ pinMode(PIN_FLECHA_ARRIBA, INPUT_PULLUP); 
+ pinMode(PIN_SELECCION, INPUT_PULLUP); 
+ pinMode(PIN_CANCELAR, INPUT_PULLUP); 
+ pinMode(PIN_ACEPTAR, INPUT_PULLUP);  
+//LINEA PULL DOWN
+  pinMode(PIN_LINEA_DOWN, OUTPUT); 
+  digitalWrite(PIN_LINEA_DOWN,LOW);
+  keypad.addEventListener(keypadEvent);
 }
 
 String identificarEstado(){
@@ -82,30 +88,35 @@ String identificarEstado(){
   //estado!=0 es para evitar que seleccionar genere algun evento en el primer estado del menu
   if(isSeleccion() && itemSeleccionado!="0.0"){            
     isSegundoNivel=true;
+    sumarContadorSegundoNivel();
+
   }
   if(isCancelar() && isSegundoNivel){
     isSegundoNivel=false;    
+    restarContadorSegundoNivel();
   }
-    Serial.print("itemSeleccionado:");
-    Serial.println(itemSeleccionado);
-    delay(2000);
-        Serial.print("INDICE_PRIMER_NIVEL:");
-    Serial.println(contadorSegundoNivel);
-         Serial.print("INDICE_SEGUNDO_NIVEL:");
-    Serial.println(contadorPrimerNivel);
-  //Setea el estado generara resultados del estilo "1.3"/ "0.0"
+
+  itemSeleccionado=obtenerNivelActual();
+  return itemSeleccionado;
+}
+
+String obtenerNivelActual(){
+//    Serial.print("itemSeleccionado:");
+//    Serial.println(itemSeleccionado);
+//    Serial.print("INDICE_PRIMER_NIVEL:");
+//    Serial.println(contadorSegundoNivel);
+//    Serial.print("INDICE_SEGUNDO_NIVEL:");
+//    Serial.println(contadorPrimerNivel);
   char bufferPrimerNivel[1];
   sprintf(bufferPrimerNivel, "%1d", contadorPrimerNivel);
-  Serial.print("contador: ");
-  Serial.println(bufferPrimerNivel[0]);
-
+//  Serial.print("contador: ");
+//  Serial.println(bufferPrimerNivel[0]);
   itemSeleccionado[INDICE_PRIMER_NIVEL]=bufferPrimerNivel[0];
   char bufferSegundoNivel[1];
   sprintf(bufferSegundoNivel, "%1d", contadorSegundoNivel);
-  Serial.print("contador2: ");
-  Serial.println(bufferSegundoNivel[0]);  
+//  Serial.print("contador2: ");
+//  Serial.println(bufferSegundoNivel[0]);  
   itemSeleccionado[INDICE_SEGUNDO_NIVEL]=bufferSegundoNivel[0];
-contadorPrimerNivel++;
   return itemSeleccionado;
 }
 
@@ -113,11 +124,9 @@ void startMenuBotonera(){
   itemSeleccionado=identificarEstado();
   Serial.println(itemSeleccionado);
   //Items primer nivel
-  if(itemSeleccionado=="0.0"){
-    //printLcdLine1("123");
-    // lcd.print("222, world!");
+  if(itemSeleccionado=="0.0"){    
     printLcd("Bienvenido","hora actual");
-    delay(4000);
+    
   }
   //Items de menu
   programarComida(itemSeleccionado);
@@ -125,21 +134,38 @@ void startMenuBotonera(){
   informacionUpdate(itemSeleccionado);
 }
 
+String hhmmBuffer="__:__";
+
+int index=0;
 void programarComida(String itemSeleccionado){
     if(itemSeleccionado=="1.0"){
       printLcd("Programar","comidas");
    }  
    if(itemSeleccionado=="1.1"){    
-    //Evento de keyPad para seteo de hora de comida
-    keypad.addEventListener(setearHoraComida);
+    printLcd("Hora comida 1",horaComida1);      
+    comportamietnoProgramacionComidaAceptarCancelar();
     char key = keypad.getKey(); 
-   }    
+   }
 }
 
 
-String hhmmBuffer="__:__";
-int index=0;
-void setearHoraComida(KeypadEvent key){
+void comportamietnoProgramacionComidaAceptarCancelar(){
+  if(isAceptar()){
+      //limpiar pantalla guardar y sumar indice segundo.
+         index=0;
+      }
+  if(isCancelar()){
+    Serial.println("cancelar");
+     index=0;
+     if(itemSeleccionado=="1.1"){     
+      horaComida1=HORA_VACIA;
+     }
+  }
+}
+
+void keypadEvent(KeypadEvent key){  
+  
+         
     switch (keypad.getState()){      
       case PRESSED:{
                if(itemSeleccionado=="1.1"){                  
@@ -149,20 +175,15 @@ void setearHoraComida(KeypadEvent key){
                   index++;
                   //if(index==6) printLcd(hhmmBuffer,"guardado");
                }
+               Serial.println("entorSiempre");
                Serial.println(horaComida1);
-        }       
+               break;
+        }
+       
+               
+        
     }
-    if(isAceptar()){
-       index=0;
-       keypad.addEventListener(0);       
-    }
-    if(isCancelar()){
-       index=0;
-       if(itemSeleccionado=="1.1"){     
-        horaComida1=HORA_VACIA;
-       }
-       keypad.addEventListener(0);       
-    }    
+ 
 }
 
 
@@ -223,26 +244,34 @@ void resetearContadorSegundoNivel(){
 
 //Helpers botones presionados
 boolean isFlechaAbajo(){
-  return presedButton(PIN_FLECHA_ABAJO);
+  return presedButton(PIN_FLECHA_ABAJO,"BOTON_ABAJO");
 }
 
 boolean isFlechaArriba(){
-  return presedButton(PIN_FLECHA_ARRIBA);
+  return presedButton(PIN_FLECHA_ARRIBA,"BOTON_ARRIBA");
 }
 
 boolean isSeleccion(){
-  return presedButton(PIN_SELECCION);
+  return presedButton(PIN_SELECCION,"BOTON_SELECCION");
+  //return false;
 }
 
 boolean isCancelar(){
-  return presedButton(PIN_CANCELAR);
+  return presedButton(PIN_CANCELAR,"BOTON_CANCELAR");
+  //return false;
 }
 
 boolean isAceptar(){
-  return presedButton(PIN_ACEPTAR);
+  return presedButton(PIN_ACEPTAR,"BOTON_ACEPTAR");
+  //return false;
 }
 
-boolean presedButton(byte buttonPin){
+boolean presedButton(byte buttonPin,String desc){
+    if(digitalRead(buttonPin)==LOW){
+      Serial.println(desc);      
+      delay(500);
+      return true;
+  }  
   // return digitalRead(buttonPin)==HIGH;
       return false;
 }
