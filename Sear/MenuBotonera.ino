@@ -95,7 +95,7 @@ void startMenuBotonera(){
   Serial.println(itemSeleccionado);
   //Items primer nivel
   if(itemSeleccionado=="0.0"){    
-    printLcd("Bienvenido","hora actual");
+    printLcd("Bienvenido",obtenerHorarioActual());
     
   }
   //Items de menu
@@ -103,7 +103,6 @@ void startMenuBotonera(){
   definirPorcionComida(itemSeleccionado);
   informacionUpdate(itemSeleccionado);
 }
-
 
 
 void definirPorcionComida(String itemSeleccionado){

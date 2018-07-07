@@ -70,7 +70,6 @@ void printLcdLine1(String cadena){
   lcdStr(cadena);    
 }
 void printLcdLine2(String cadena){
-//  lcd.clear();
   lcd.setCursor(0, 1);
   // print the number of seconds since reset:    
   lcdStr(cadena);  

@@ -25,33 +25,53 @@ String horaComida2="__:__";
 String horaComida3="__:__";
 String horaComida4="__:__";
 int index=0;
+int HORA_COMPLETADA=5;
 
 void inicializarProgramarComida(){
   keypad.addEventListener(setearHorariosComida);
 }
 
 void programarComida(String itemSeleccionado){
+     verificarHorario(horaComida1,horaComida2,horaComida3,horaComida4);
+
+  
     if(itemSeleccionado=="1.0"){
       printLcd("Programar","comidas");
+      resetarIndex();
    }  
    if(itemSeleccionado=="1.1"){    
     printLcd("Hora comida 1",horaComida1);      
     comportamietnoProgramacionComidaAceptarCancelar();
     char key = keypad.getKey(); 
    }
+   if(itemSeleccionado=="1.2"){    
+    printLcd("Hora comida 2",horaComida2);      
+    comportamietnoProgramacionComidaAceptarCancelar();
+    char key = keypad.getKey(); 
+   }
 }
 
+void resetarIndex(){
+  index=0;
+}
 
 void comportamietnoProgramacionComidaAceptarCancelar(){
   if(isAceptar()){
-      //limpiar pantalla guardar y sumar indice segundo.
-         index=0;
-      }
+    if(index==HORA_COMPLETADA){
+      sumarContadorSegundoNivel();
+      resetarIndex();  
+    }else{
+      errorSound();
+    }
+  }
   if(isCancelar()){
     Serial.println("cancelar");
-     index=0;
+     resetarIndex();
      if(itemSeleccionado=="1.1"){     
       horaComida1=HORA_VACIA;
+     }
+     if(itemSeleccionado=="1.2"){     
+      horaComida2=HORA_VACIA;
      }
   }
 }
@@ -61,14 +81,13 @@ void setearHorariosComida(KeypadEvent key){
 
     switch (keypad.getState()){      
       case PRESSED:{
-               if(itemSeleccionado=="1.1"){                  
-                if(validarHora(key,horaComida1,index)){
+              if(validarHora(key,index)){
+               if(itemSeleccionado=="1.1"){
                   setarHoraComida(&horaComida1,key);
-//                  if(index==2){index++;} //Esto es para que se saltee el ":"
-//                  horaComida1[index]=key;   
-//                  printLcdLine2(horaComida1);               
-//                  index++;
                 }
+               if(itemSeleccionado=="1.2"){                
+                  setarHoraComida(&horaComida2,key);
+                }                
                }
                Serial.println("entorSiempre");
                Serial.println(horaComida1);
