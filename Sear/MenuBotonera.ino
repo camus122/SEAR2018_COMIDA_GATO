@@ -10,19 +10,7 @@
  * 3: Informe/Actualizacion
  *      3.1: {Mostrar info} + {Consultar json}
  */
-const byte ROWS = 4; //four rows
-const byte COLS = 3; //three columns
-char keys[ROWS][COLS] = {
-    {'1','2','3'},
-    {'4','5','6'},
-    {'7','8','9'},
-    {'*','0','#'}
-};
 
-byte rowPins[ROWS] = {31, 33, 35, 37}; //connect to the row pinouts of the keypad
-byte colPins[COLS] = {39, 41, 43}; //connect to the column pinouts of the keypad
-
-Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 //Constantes de pins de botones
 const byte PIN_FLECHA_ABAJO = 26; 
@@ -44,14 +32,6 @@ String itemSeleccionado="0.0"; //Variable  global de estado seleccionado
 int contadorPrimerNivel=0;
 int contadorSegundoNivel=0;
 
-//Constantes de horarios
-String HORA_RECHAZADA="##:##";
-String HORA_VACIA="__:__";
-//Buffers de horas de comidas
-String horaComida1="__:__";
-String horaComida2="__:__";
-String horaComida3="__:__";
-String horaComida4="__:__";
 
 
 void setupMenuBotonera(){
@@ -63,7 +43,7 @@ void setupMenuBotonera(){
 //LINEA PULL DOWN
   pinMode(PIN_LINEA_DOWN, OUTPUT); 
   digitalWrite(PIN_LINEA_DOWN,LOW);
-  keypad.addEventListener(keypadEvent);
+  inicializarProgramarComida();
 }
 
 String identificarEstado(){

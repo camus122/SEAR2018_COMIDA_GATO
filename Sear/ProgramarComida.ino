@@ -1,6 +1,34 @@
+/**
+ * Se setea el keyboard de fechas
+ */
+const byte ROWS = 4; //four rows
+const byte COLS = 3; //three columns
+char keys[ROWS][COLS] = {
+    {'1','2','3'},
+    {'4','5','6'},
+    {'7','8','9'},
+    {'*','0','#'}
+};
 
-String hhmmBuffer="__:__";
+byte rowPins[ROWS] = {31, 33, 35, 37}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {39, 41, 43}; //connect to the column pinouts of the keypad
+
+Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
+/**************************************************************/
+
+//Constantes de horarios
+String HORA_RECHAZADA="##:##";
+String HORA_VACIA="__:__";
+//Buffers de horas de comidas
+String horaComida1="__:__";
+String horaComida2="__:__";
+String horaComida3="__:__";
+String horaComida4="__:__";
 int index=0;
+
+void inicializarProgramarComida(){
+  keypad.addEventListener(setearHorariosComida);
+}
 
 void programarComida(String itemSeleccionado){
     if(itemSeleccionado=="1.0"){
@@ -28,7 +56,7 @@ void comportamietnoProgramacionComidaAceptarCancelar(){
   }
 }
 
-void keypadEvent(KeypadEvent key){  
+void setearHorariosComida(KeypadEvent key){  
   
 
     switch (keypad.getState()){      
