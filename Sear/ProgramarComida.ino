@@ -63,10 +63,11 @@ void setearHorariosComida(KeypadEvent key){
       case PRESSED:{
                if(itemSeleccionado=="1.1"){                  
                 if(validarHora(key,horaComida1,index)){
-                  if(index==2){index++;} //Esto es para que se saltee el ":"
-                  horaComida1[index]=key;   
-                  printLcdLine2(horaComida1);               
-                  index++;
+                  setarHoraComida(&horaComida1,key);
+//                  if(index==2){index++;} //Esto es para que se saltee el ":"
+//                  horaComida1[index]=key;   
+//                  printLcdLine2(horaComida1);               
+//                  index++;
                 }
                }
                Serial.println("entorSiempre");
@@ -77,7 +78,14 @@ void setearHorariosComida(KeypadEvent key){
 }
 
 
-boolean validarHora(KeypadEvent key, String hora,int index){
+void setarHoraComida(String *hhmmComida,KeypadEvent key){
+    if(index==2){index++;} //Esto es para que se saltee el ":"
+    (*hhmmComida)[index]=key;   
+    printLcdLine2(*hhmmComida);               
+    index++;
+}
+
+boolean validarHora(KeypadEvent key, int index){
   boolean valido=false;
   if(key=='*' || key=='#'){
     errorSound();
