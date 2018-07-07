@@ -5,3 +5,7 @@ void errorSound(){
    tone(PIN_BUZZER,2200, noteDuration);
 }
 
+void marchaImperialSound(){
+  marchaImperial(PIN_BUZZER);
+}
+

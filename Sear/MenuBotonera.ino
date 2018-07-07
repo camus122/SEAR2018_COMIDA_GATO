@@ -92,14 +92,15 @@ String obtenerNivelActual(){
 
 void startMenuBotonera(){
   itemSeleccionado=identificarEstado();
+  String hhmmActual=obtenerHorarioActual();
   Serial.println(itemSeleccionado);
   //Items primer nivel
   if(itemSeleccionado=="0.0"){    
-    printLcd("Bienvenido",obtenerHorarioActual());
+    printLcd("Bienvenido",hhmmActual);
     
   }
   //Items de menu
-  programarComida(itemSeleccionado);
+  programarComida(itemSeleccionado,hhmmActual);
   definirPorcionComida(itemSeleccionado);
   informacionUpdate(itemSeleccionado);
 }
@@ -122,42 +123,52 @@ void informacionUpdate(String itemSeleccionado){
 /**
  * HELPERS
  */
-
+void resetarNiveles(){
+  isSegundoNivel=false;
+  contadorPrimerNivel=0;
+  contadorSegundoNivel=0;
+}
  
-void sumarContadorPrimerNivel(){
+int sumarContadorPrimerNivel(){
   if(!isSegundoNivel){
     contadorPrimerNivel++;
   }
+  return contadorPrimerNivel;
 }
 
-void restarContadorPrimerNivel(){
+int restarContadorPrimerNivel(){
   if(!isSegundoNivel){
     contadorPrimerNivel--;
   }
+  return contadorPrimerNivel;
 }
 
-void resetearContadorPrimerNivel(){
+int resetearContadorPrimerNivel(){
   if(!isSegundoNivel){
     contadorPrimerNivel=0;
   }
+  return contadorPrimerNivel;
 }
 
-void sumarContadorSegundoNivel(){
+int sumarContadorSegundoNivel(){
   if(isSegundoNivel){
     contadorSegundoNivel++;
   }
+  return contadorSegundoNivel;
 }
 
-void restarContadorSegundoNivel(){
+int restarContadorSegundoNivel(){
   if(isSegundoNivel){
     contadorSegundoNivel--;
   }
+  return contadorSegundoNivel;
 } 
 
-void resetearContadorSegundoNivel(){
+int resetearContadorSegundoNivel(){
   if(isSegundoNivel){
     contadorSegundoNivel=0;
   }
+  return contadorSegundoNivel;
 }
 
 //Helpers botones presionados

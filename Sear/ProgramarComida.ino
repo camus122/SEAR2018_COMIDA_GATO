@@ -27,12 +27,14 @@ String horaComida4="__:__";
 int index=0;
 int HORA_COMPLETADA=5;
 
+int MAXIMO_CANTIDAD_COMIDA=3;
+
 void inicializarProgramarComida(){
   keypad.addEventListener(setearHorariosComida);
 }
 
-void programarComida(String itemSeleccionado){
-     verificarHorario(horaComida1,horaComida2,horaComida3,horaComida4);
+void programarComida(String itemSeleccionado,String horaMinutoActual){
+     verificarHorario(horaMinutoActual,horaComida1,horaComida2,horaComida3,horaComida4);
 
   
     if(itemSeleccionado=="1.0"){
@@ -58,8 +60,11 @@ void resetarIndex(){
 void comportamietnoProgramacionComidaAceptarCancelar(){
   if(isAceptar()){
     if(index==HORA_COMPLETADA){
-      sumarContadorSegundoNivel();
+      int contador=sumarContadorSegundoNivel();
       resetarIndex();  
+      if(contador==MAXIMO_CANTIDAD_COMIDA){
+        resetarNiveles();
+      }
     }else{
       errorSound();
     }
@@ -77,19 +82,17 @@ void comportamietnoProgramacionComidaAceptarCancelar(){
 }
 
 void setearHorariosComida(KeypadEvent key){  
-  
-
     switch (keypad.getState()){      
       case PRESSED:{
-               if(itemSeleccionado=="1.1" && validarHora(key,horaComida1,index)){
-                  setarHoraComida(&horaComida1,key);
-                }
-               if(itemSeleccionado=="1.2" && validarHora(key,horaComida2,index)){                
-                  setarHoraComida(&horaComida2,key);
-                }                
-               Serial.println("entorSiempre");
-               Serial.println(horaComida1);
-               break;
+         if(itemSeleccionado=="1.1" && validarHora(key,horaComida1,index)){
+            setarHoraComida(&horaComida1,key);
+          }
+         if(itemSeleccionado=="1.2" && validarHora(key,horaComida2,index)){                
+            setarHoraComida(&horaComida2,key);
+          }                
+         Serial.println("entorSiempre");
+         Serial.println(horaComida1);
+         break;
         }        
     }
 }
@@ -102,6 +105,16 @@ void setarHoraComida(String *hhmmComida,KeypadEvent key){
     index++;
 }
 
+/**
+ * Liberar comida
+ */
+ void liberarComida(){
+  marchaImperialSound();
+ }
+
+/**
+ * Validacion de horario al momento de cargar por keypad
+ */
 boolean validarHora(KeypadEvent key, String hhmmComida,int index){
   boolean valido=false;
   if(key=='*' || key=='#'){
