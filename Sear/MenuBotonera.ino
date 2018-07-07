@@ -101,21 +101,11 @@ String identificarEstado(){
 }
 
 String obtenerNivelActual(){
-//    Serial.print("itemSeleccionado:");
-//    Serial.println(itemSeleccionado);
-//    Serial.print("INDICE_PRIMER_NIVEL:");
-//    Serial.println(contadorSegundoNivel);
-//    Serial.print("INDICE_SEGUNDO_NIVEL:");
-//    Serial.println(contadorPrimerNivel);
   char bufferPrimerNivel[1];
   sprintf(bufferPrimerNivel, "%1d", contadorPrimerNivel);
-//  Serial.print("contador: ");
-//  Serial.println(bufferPrimerNivel[0]);
   itemSeleccionado[INDICE_PRIMER_NIVEL]=bufferPrimerNivel[0];
   char bufferSegundoNivel[1];
   sprintf(bufferSegundoNivel, "%1d", contadorSegundoNivel);
-//  Serial.print("contador2: ");
-//  Serial.println(bufferSegundoNivel[0]);  
   itemSeleccionado[INDICE_SEGUNDO_NIVEL]=bufferSegundoNivel[0];
   return itemSeleccionado;
 }
@@ -134,57 +124,6 @@ void startMenuBotonera(){
   informacionUpdate(itemSeleccionado);
 }
 
-String hhmmBuffer="__:__";
-
-int index=0;
-void programarComida(String itemSeleccionado){
-    if(itemSeleccionado=="1.0"){
-      printLcd("Programar","comidas");
-   }  
-   if(itemSeleccionado=="1.1"){    
-    printLcd("Hora comida 1",horaComida1);      
-    comportamietnoProgramacionComidaAceptarCancelar();
-    char key = keypad.getKey(); 
-   }
-}
-
-
-void comportamietnoProgramacionComidaAceptarCancelar(){
-  if(isAceptar()){
-      //limpiar pantalla guardar y sumar indice segundo.
-         index=0;
-      }
-  if(isCancelar()){
-    Serial.println("cancelar");
-     index=0;
-     if(itemSeleccionado=="1.1"){     
-      horaComida1=HORA_VACIA;
-     }
-  }
-}
-
-void keypadEvent(KeypadEvent key){  
-  
-         
-    switch (keypad.getState()){      
-      case PRESSED:{
-               if(itemSeleccionado=="1.1"){                  
-                  if(index==2){index++;} //Esto es para que se saltee el ":"
-                  horaComida1[index]=key;   
-                  printLcdLine2(horaComida1);               
-                  index++;
-                  //if(index==6) printLcd(hhmmBuffer,"guardado");
-               }
-               Serial.println("entorSiempre");
-               Serial.println(horaComida1);
-               break;
-        }
-       
-               
-        
-    }
- 
-}
 
 
 void definirPorcionComida(String itemSeleccionado){

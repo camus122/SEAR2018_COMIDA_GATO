@@ -1,6 +1,7 @@
 #include <Keypad.h>
 #include <LiquidCrystal.h>
 #include <Servo.h>
+#include <pitches.h>
 
 bool keyEventPressed=false;
 
