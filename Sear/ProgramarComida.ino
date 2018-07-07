@@ -81,14 +81,12 @@ void setearHorariosComida(KeypadEvent key){
 
     switch (keypad.getState()){      
       case PRESSED:{
-              if(validarHora(key,index)){
-               if(itemSeleccionado=="1.1"){
+               if(itemSeleccionado=="1.1" && validarHora(key,horaComida1,index)){
                   setarHoraComida(&horaComida1,key);
                 }
-               if(itemSeleccionado=="1.2"){                
+               if(itemSeleccionado=="1.2" && validarHora(key,horaComida2,index)){                
                   setarHoraComida(&horaComida2,key);
                 }                
-               }
                Serial.println("entorSiempre");
                Serial.println(horaComida1);
                break;
@@ -104,7 +102,7 @@ void setarHoraComida(String *hhmmComida,KeypadEvent key){
     index++;
 }
 
-boolean validarHora(KeypadEvent key, int index){
+boolean validarHora(KeypadEvent key, String hhmmComida,int index){
   boolean valido=false;
   if(key=='*' || key=='#'){
     errorSound();
@@ -115,6 +113,17 @@ boolean validarHora(KeypadEvent key, int index){
        valido=key=='0' ||key=='1' || key=='2' ;
        break;
     }
+    case 1:{
+        /**
+         * Que no se puede colocar una hora superior a 20/21/22/23
+         */
+        if(hhmmComida[0]=='2'){
+          valido=key=='0' ||key=='1' || key=='2' || key=='3' ;   
+        }else{
+          valido=true;
+        }       
+       break;
+    }    
     case 2:{
        valido=key=='0' ||key=='1' || key=='2' || key=='3' ||key=='4' || key=='5' ;
        break;
