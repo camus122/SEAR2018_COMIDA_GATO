@@ -56,37 +56,47 @@ void setupLCD(){
 }
 
 void startMenu() {
-  // set the cursor to column 0, line 1
-  // (note: line 1 is the second row, since counting begins with 0):
   lcd.setCursor(0, 1);
-  // print the number of seconds since reset:
   lcdStr(String(millis() / 1000));
 }
 void printLcdLine1(String cadena){
-//  lcd.clear();
+ printLcdLine1(cadena,true);
+}
+
+void printLcdLine1(String cadena,bool completeString){
   lcd.setCursor(0, 0);
-  // print the number of seconds since reset:  
-  
-  lcdStr(cadena);    
-}
-void printLcdLine2(String cadena){
-  lcd.setCursor(0, 1);
   // print the number of seconds since reset:    
-  lcdStr(cadena);  
+  if(completeString){
+    lcdStr(cadena);      
+  }else{
+    lcd.print(cadena);
+  }
 }
+
+void printLcdLine2(String cadena){
+  printLcdLine2(cadena,true);  
+}
+
+void printLcdLine2(String cadena,bool completeString){
+  lcd.setCursor(0, 1);
+  if(completeString){
+    lcdStr(cadena);      
+  }else{
+    lcd.print(cadena);
+  }
+}
+
+
 void printLcd(String cadena1,String cadena2){
  printLcdLine1(cadena1);
  printLcdLine2(cadena2);
 }
 
+
 void lcdStr(String str)
 {
-//  lcd.clear();
-  Serial.println(str);
   lcd.print(str);
-  for(int i = str.length(); i<16;i++) lcd.print(' ');
-  
-  
+  for(int i = str.length(); i<16;i++) lcd.print(' '); 
 }
 
 

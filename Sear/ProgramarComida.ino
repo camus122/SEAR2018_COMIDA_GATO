@@ -20,8 +20,8 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 String HORA_RECHAZADA="##:##";
 String HORA_VACIA="__:__";
 //Buffers de horas de comidas
-//String horaComida1="__:__";
-String horaComida1="09:59";
+String horaComida1="__:__";
+//String horaComida1="09:59";
 String horaComida2="__:__";
 String horaComida3="__:__";
 String horaComida4="__:__";
@@ -121,7 +121,7 @@ void setarHoraComida(String *hhmmComida,KeypadEvent key){
     delay(1000);
     cerrarServo();
   }
- //\\\\\\\ marchaImperialSound();  
+ //marchaImperialSound();  
  }
 
 /**

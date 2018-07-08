@@ -109,17 +109,6 @@ void startMenuBotonera(){
   informacionUpdate(itemSeleccionado);
 }
 
-
-
-
-void informacionUpdate(String itemSeleccionado){
-  if(itemSeleccionado=="3.0"){
-    printLcd("Informacion","update");
-  }    
-}
-
-
-
 /**
  * HELPERS
  */
@@ -204,6 +193,7 @@ boolean presedButton(byte buttonPin,String desc){
   // return digitalRead(buttonPin)==HIGH;
       return false;
 }
+
 
 
 
