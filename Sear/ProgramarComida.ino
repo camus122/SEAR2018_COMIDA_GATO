@@ -20,12 +20,15 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 String HORA_RECHAZADA="##:##";
 String HORA_VACIA="__:__";
 //Buffers de horas de comidas
-String horaComida1="__:__";
+//String horaComida1="__:__";
+String horaComida1="09:59";
 String horaComida2="__:__";
 String horaComida3="__:__";
 String horaComida4="__:__";
 int index=0;
 int HORA_COMPLETADA=5;
+int INDICE_VACIA=0;
+
 
 int MAXIMO_CANTIDAD_COMIDA=3;
 
@@ -33,8 +36,8 @@ void inicializarProgramarComida(){
   keypad.addEventListener(setearHorariosComida);
 }
 
-void programarComida(String itemSeleccionado,String horaMinutoActual){
-     verificarHorario(horaMinutoActual,horaComida1,horaComida2,horaComida3,horaComida4);
+void programarComida(String itemSeleccionado,String horaMinutoActual,String porciones){
+     verificarHorario(horaMinutoActual,horaComida1,horaComida2,horaComida3,horaComida4,porciones);
 
   
     if(itemSeleccionado=="1.0"){
@@ -59,7 +62,7 @@ void resetarIndex(){
 
 void comportamietnoProgramacionComidaAceptarCancelar(){
   if(isAceptar()){
-    if(index==HORA_COMPLETADA){
+    if(index==HORA_COMPLETADA || index==INDICE_VACIA){
       int contador=sumarContadorSegundoNivel();
       resetarIndex();  
       if(contador==MAXIMO_CANTIDAD_COMIDA){
@@ -108,8 +111,17 @@ void setarHoraComida(String *hhmmComida,KeypadEvent key){
 /**
  * Liberar comida
  */
- void liberarComida(){
-  marchaImperialSound();
+ void liberarComida(String porciones){  
+  for(int i=0;i<porciones.toInt();i++){
+    Serial.print("LIBERAR_COMIDA: ");
+    Serial.println(i);
+    //Serial.print("LIBERAR_COMIDA"):
+    if(i!=0){delay(1000);} //Esto es para que en las iteraciones posteriores espere a que cierre el servo;
+    abrirServo();
+    delay(1000);
+    cerrarServo();
+  }
+ //\\\\\\\ marchaImperialSound();  
  }
 
 /**

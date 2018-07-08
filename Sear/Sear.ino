@@ -19,7 +19,7 @@ void setup(){
   setupChequearHoraComida();
   setupLCD();
   //setupKeyPad();
-  //setupServo();
+  setupServo();
   setupMenuBotonera();
 }
 

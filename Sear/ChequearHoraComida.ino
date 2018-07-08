@@ -16,11 +16,11 @@ String obtenerHorarioActual(){
 String horaUltimaComida="__:__";
 boolean liberoComida=false;
 
-void verificarHorario(String hActual,String horaComida1,String horaComida2,String horaComida3,String horaComida4){
+void verificarHorario(String hActual,String horaComida1,String horaComida2,String horaComida3,String horaComida4,String porciones){
   //Realizara la accion de liberar comida si y solo si aun no libero la comida en algun horario.
   if(!liberoComida && (hActual==horaComida1 || hActual==horaComida2 || hActual==horaComida3 || hActual==horaComida4)){
     horaUltimaComida=hActual;
-   liberarComida();   
+   liberarComida(porciones);   
   }  
   if(horaUltimaComida==hActual){
     liberoComida=true;

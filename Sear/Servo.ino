@@ -1,14 +1,22 @@
-char pin=A0;
+char PIN_SERVO=A0;
 Servo myservo;
 int degrees=0;
 
+int SERVO_CERRADO=180;
+int SERVO_ABIERTO=0;
+
+
 void setupServo(){
-   myservo.attach(pin);
+   myservo.attach(PIN_SERVO);
 }
 
-void sweepServo() {
-    myservo.write(degrees); 
-    delay(3000);
-    if(degrees==0)degrees=180;
-    else degrees=0;
+void abrirServo(){
+  myservo.write(SERVO_ABIERTO); 
 }
+
+void cerrarServo(){
+  myservo.write(SERVO_CERRADO); 
+}
+
+
+

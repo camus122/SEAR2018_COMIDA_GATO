@@ -33,6 +33,9 @@ int contadorPrimerNivel=0;
 int contadorSegundoNivel=0;
 
 
+//VARIABELS DE PORCIONES
+String PORCIONES="1";
+
 
 void setupMenuBotonera(){
  pinMode(PIN_FLECHA_ABAJO, INPUT_PULLUP); 
@@ -44,6 +47,7 @@ void setupMenuBotonera(){
   pinMode(PIN_LINEA_DOWN, OUTPUT); 
   digitalWrite(PIN_LINEA_DOWN,LOW);
   inicializarProgramarComida();
+  inicializarDefinirPorcionComida();
 }
 
 String identificarEstado(){
@@ -100,17 +104,13 @@ void startMenuBotonera(){
     
   }
   //Items de menu
-  programarComida(itemSeleccionado,hhmmActual);
+  programarComida(itemSeleccionado,hhmmActual,PORCIONES);
   definirPorcionComida(itemSeleccionado);
   informacionUpdate(itemSeleccionado);
 }
 
 
-void definirPorcionComida(String itemSeleccionado){
-  if(itemSeleccionado=="2.0"){
-    printLcd("Porcion de","comida");
-  }  
-}
+
 
 void informacionUpdate(String itemSeleccionado){
   if(itemSeleccionado=="3.0"){
