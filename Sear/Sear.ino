@@ -13,6 +13,7 @@
 const int MODO_TESTING=0;
 const int MODO_MANTENIMIENTO=1;
 const int MODO_NORMAL=2;
+const int FIN_MANTENIMIENTO=-1;
 
 int MODO=MODO_NORMAL;
 
@@ -44,6 +45,7 @@ void loop() {
     }
     case FIN_MANTENIMIENTO:{
       restaurarConfiguracion();
+      resetarNiveles();
       MODO=MODO_NORMAL;
       break;
     }    

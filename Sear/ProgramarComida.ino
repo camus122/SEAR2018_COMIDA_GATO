@@ -96,8 +96,13 @@ void comportamietnoProgramacionComidaAceptarCancelar(){
      }     
      if(itemSeleccionado=="1.4"){     
       horaComida4=HORA_VACIA;
-     }          
+     }            
   }
+
+  if(isSeleccion() || isFlechaAbajo() || isFlechaArriba()){
+    errorSound(); 
+  }
+  
 }
 
 void setearHorariosComida(KeypadEvent key){  

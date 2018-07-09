@@ -32,14 +32,6 @@ void definirPorcionComida(String itemSeleccionado){
     printLcd("Cant. porciones",PORCIONES);      
     comportamietnoDefinirPorcionComidaAceptarCancelar();
      char key = keypadPorciones.getKey(); 
-//    if(isPorcionValida){
-//      //int number = atoi( input );
-//      (*porciones)=atoi(key);
-//      Serial.print("PORCIONES: ");
-//      Serial.println((*porciones));
-//     }else{
-//      Serial.println("no valida");
-//     }
    }
 
 }
@@ -50,7 +42,7 @@ void comportamietnoDefinirPorcionComidaAceptarCancelar(){
       resetarNiveles();
       isPorcionValida=false;
   }
-  if(isCancelar()){
+  if(isCancelar() || isFlechaAbajo() || isFlechaArriba()){
     errorSound();
   }
 }

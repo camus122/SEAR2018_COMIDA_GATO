@@ -51,11 +51,11 @@ void setupMenuBotonera(){
 }
 
 String identificarEstado(){
-  if(isFlechaAbajo()){
+  if(isFlechaAbajo() && contadorSegundoNivel==0){
     sumarContadorPrimerNivel();
     sumarContadorSegundoNivel();
   }
-  if(isFlechaArriba()){
+  if(isFlechaArriba() && contadorSegundoNivel==0){
     restarContadorPrimerNivel();
     restarContadorSegundoNivel();
   }
@@ -70,15 +70,11 @@ String identificarEstado(){
     resetearContadorSegundoNivel();
   }
   //estado!=0 es para evitar que seleccionar genere algun evento en el primer estado del menu
-  if(isSeleccion() && isSegundoNivel){
-    
+  if(isSeleccion() && itemSeleccionado!="0.0" && contadorSegundoNivel==0){            
+      isSegundoNivel=true;
+      sumarContadorSegundoNivel();
   }
-  if(isSeleccion() && itemSeleccionado!="0.0"){            
-    isSegundoNivel=true;
-    sumarContadorSegundoNivel();
-
-  }
-  if(isCancelar() && isSegundoNivel){
+  if(isCancelar() && isSegundoNivel && contadorSegundoNivel==0){
     isSegundoNivel=false;    
     restarContadorSegundoNivel();
   }
@@ -183,12 +179,10 @@ boolean isSeleccion(){
 
 boolean isCancelar(){
   return presedButton(PIN_CANCELAR,"BOTON_CANCELAR");
-  //return false;
 }
 
 boolean isAceptar(){
   return presedButton(PIN_ACEPTAR,"BOTON_ACEPTAR");
-  //return false;
 }
 
 boolean presedButton(byte buttonPin,String desc){
