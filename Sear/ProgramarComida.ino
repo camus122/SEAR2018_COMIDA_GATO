@@ -30,7 +30,7 @@ int HORA_COMPLETADA=5;
 int INDICE_VACIA=0;
 
 
-int MAXIMO_CANTIDAD_COMIDA=3;
+int MAXIMO_CANTIDAD_COMIDA=5;
 
 void inicializarProgramarComida(){
   keypad.addEventListener(setearHorariosComida);
@@ -54,6 +54,16 @@ void programarComida(String itemSeleccionado,String horaMinutoActual,String porc
     comportamietnoProgramacionComidaAceptarCancelar();
     char key = keypad.getKey(); 
    }
+   if(itemSeleccionado=="1.3"){    
+    printLcd("Hora comida 3",horaComida3);      
+    comportamietnoProgramacionComidaAceptarCancelar();
+    char key = keypad.getKey(); 
+   }   
+   if(itemSeleccionado=="1.4"){    
+    printLcd("Hora comida 4",horaComida4);      
+    comportamietnoProgramacionComidaAceptarCancelar();
+    char key = keypad.getKey(); 
+   }      
 }
 
 void resetarIndex(){
@@ -81,6 +91,12 @@ void comportamietnoProgramacionComidaAceptarCancelar(){
      if(itemSeleccionado=="1.2"){     
       horaComida2=HORA_VACIA;
      }
+     if(itemSeleccionado=="1.3"){     
+      horaComida3=HORA_VACIA;
+     }     
+     if(itemSeleccionado=="1.4"){     
+      horaComida4=HORA_VACIA;
+     }          
   }
 }
 
@@ -93,8 +109,12 @@ void setearHorariosComida(KeypadEvent key){
          if(itemSeleccionado=="1.2" && validarHora(key,horaComida2,index)){                
             setarHoraComida(&horaComida2,key);
           }                
-         Serial.println("entorSiempre");
-         Serial.println(horaComida1);
+         if(itemSeleccionado=="1.3" && validarHora(key,horaComida3,index)){                
+            setarHoraComida(&horaComida3,key);
+          }                  
+         if(itemSeleccionado=="1.4" && validarHora(key,horaComida4,index)){                
+            setarHoraComida(&horaComida4,key);
+          }                            
          break;
         }        
     }
