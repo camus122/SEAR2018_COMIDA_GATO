@@ -70,6 +70,9 @@ String identificarEstado(){
     resetearContadorSegundoNivel();
   }
   //estado!=0 es para evitar que seleccionar genere algun evento en el primer estado del menu
+  if(isSeleccion() && isSegundoNivel){
+    
+  }
   if(isSeleccion() && itemSeleccionado!="0.0"){            
     isSegundoNivel=true;
     sumarContadorSegundoNivel();
@@ -100,7 +103,12 @@ void startMenuBotonera(){
   Serial.println(itemSeleccionado);
   //Items primer nivel
   if(itemSeleccionado=="0.0"){    
-    printLcd("Bienvenido",hhmmActual);
+    if(isModoMantenimientoActivo()){
+      printLcd("MANTENIMIENTO",hhmmActual);  
+    }else{
+      printLcd("Bienvenido",hhmmActual);
+    }
+    
     
   }
   //Items de menu
@@ -171,7 +179,6 @@ boolean isFlechaArriba(){
 
 boolean isSeleccion(){
   return presedButton(PIN_SELECCION,"BOTON_SELECCION");
-  //return false;
 }
 
 boolean isCancelar(){

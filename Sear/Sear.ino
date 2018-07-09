@@ -38,13 +38,23 @@ void loop() {
       break;
     }
     case MODO_MANTENIMIENTO:{
-      //Pendiente
+      guardandoConfiguracion();
+      startMenuBotonera();
       break;
     }
+    case FIN_MANTENIMIENTO:{
+      restaurarConfiguracion();
+      MODO=MODO_NORMAL;
+      break;
+    }    
     default:{
       MODO=MODO_NORMAL;
     }
   }
+}
+
+bool isModoMantenimientoActivo(){
+  return MODO==MODO_MANTENIMIENTO;
 }
 
 
