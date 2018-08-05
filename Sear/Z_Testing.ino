@@ -5,39 +5,37 @@ bool botonCancelarOK=false;
 bool botonAceptarOK=false;
 bool servoMotorOK=false;
 bool LCDOK=false;
-int delayEntreBotones=1000;
 
-byte rectangulo[8] =
- {
- 0b11111111,
- 0b11111111,
- 0b11111111,
- 0b11111111,
- 0b11111111,
- 0b11111111,
- 0b11111111,
- 0b11111111
- };
+//bool botonFlechaAbajoOK=true;
+//bool botonFlechaArribaOK=true;
+//bool botonSeleccionOK=true;
+//bool botonCancelarOK=true;
+//bool botonAceptarOK=true;
+//bool servoMotorOK=true;
+//bool LCDOK=true;
+
+
+bool keyPadOK=false;
+int delayEntreBotones=500;
+
+String LCD_TEST_LINEA="ABCDEFGHIJKLMNOP";
 
 void startModoTesting(){
-    
-    //encendemos todos los bits del lcd
-    if(!LCDOK){
-      lcd.begin(16, 2); 
-      lcd.createChar(1, rectangulo);
-      lcd.setCursor(0, 0); 
-      lcd.print("PROBANDO LCD");
-      lcd.setCursor(2, 0); 
-      int i;
-      for (i = 0; i < 16; i = i + 1) {
         
-      lcd.write(1); 
+   if(!LCDOK){
+      printLcd("MODO TESTING","PROBAR LCD");
+      delay(1000);
+      String data="                ";
+      for (int i = 0; i < 16; i = i+1) {
+        data[i]=LCD_TEST_LINEA[i];       
+        printLcd(data,data);
+        delay(200);
       }
             
       LCDOK=true;
-      delay(1000)
+      delay(1000);
      }
-    
+
     printLcd("MODO TESTING","PROBAR BOTONES");
 
     if(!servoMotorOK){
@@ -76,7 +74,51 @@ void startModoTesting(){
       botonAceptarOK=true;
       delay(delayEntreBotones);
     }
-    if(servoMotorOK && botonFlechaAbajoOK && botonFlechaArribaOK && botonSeleccionOK && botonCancelarOK && botonAceptarOK){
+
+    if(isAceptar()){      
+      printLcd("FLECHA ACEPTAR","OK!!");
+      botonAceptarOK=true;
+      delay(delayEntreBotones);
+    }
+
+    if(botonFlechaAbajoOK && botonFlechaArribaOK && botonSeleccionOK && botonCancelarOK && botonAceptarOK && !keyPadOK){
+        printLcd("PROBANDO","KEYPAD");
+        delay(1000);
+        boolean todasTeclasPresionadas=false;
+        String keyPadPresionado="1234567890*#";
+        String dataEmpty="            ";
+        while(!todasTeclasPresionadas){
+            printLcd("PRESIONAR TECLAS",dataEmpty);
+           char key = keypad.getKey(); 
+           switch(key){
+              case '1':dataEmpty[0]=key; break;
+              case '2':dataEmpty[1]=key; break;
+              case '3':dataEmpty[2]=key; break;
+              case '4':dataEmpty[3]=key; break;
+              case '5':dataEmpty[4]=key; break;
+              case '6':dataEmpty[5]=key; break;
+              case '7':dataEmpty[6]=key; break;
+              case '8':dataEmpty[7]=key; break;
+              case '9':dataEmpty[8]=key; break;
+              case '0':dataEmpty[9]=key; break;
+              case '*':dataEmpty[10]=key; break;
+              case '#':dataEmpty[11]=key; break;               
+           }
+           delay(200);
+           if(keyPadPresionado == dataEmpty){
+            todasTeclasPresionadas=true;
+            keyPadOK=true;
+             printLcd("MODO TESTING","KEYPAD OK!!"); 
+             delay(1000);
+           }
+        }
+
+    }
+
+    
+
+    
+    if(keyPadOK && LCDOK && servoMotorOK && botonFlechaAbajoOK && botonFlechaArribaOK && botonSeleccionOK && botonCancelarOK && botonAceptarOK){
       printLcd("BOTONES","OK!! =D");   
       delay(2000);
       printLcd("PROBANDO","BUZZER");   
@@ -86,4 +128,5 @@ void startModoTesting(){
       MODO=MODO_NORMAL;
     }
  }
+
 

@@ -15,7 +15,7 @@ const int MODO_MANTENIMIENTO=1;
 const int MODO_NORMAL=2;
 const int FIN_MANTENIMIENTO=-1;
 
-int MODO=MODO_NORMAL;
+int MODO=MODO_TESTING;
 
 
 
