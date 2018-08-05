@@ -4,9 +4,40 @@ bool botonSeleccionOK=false;
 bool botonCancelarOK=false;
 bool botonAceptarOK=false;
 bool servoMotorOK=false;
+bool LCDOK=false;
 int delayEntreBotones=1000;
 
+byte rectangulo[8] =
+ {
+ 0b11111111,
+ 0b11111111,
+ 0b11111111,
+ 0b11111111,
+ 0b11111111,
+ 0b11111111,
+ 0b11111111,
+ 0b11111111
+ };
+
 void startModoTesting(){
+    
+    //encendemos todos los bits del lcd
+    if(!LCDOK){
+      lcd.begin(16, 2); 
+      lcd.createChar(1, rectangulo);
+      lcd.setCursor(0, 0); 
+      lcd.print("PROBANDO LCD");
+      lcd.setCursor(2, 0); 
+      int i;
+      for (i = 0; i < 16; i = i + 1) {
+        
+      lcd.write(1); 
+      }
+            
+      LCDOK=true;
+      delay(1000)
+     }
+    
     printLcd("MODO TESTING","PROBAR BOTONES");
 
     if(!servoMotorOK){
