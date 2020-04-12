@@ -1,3 +1,10 @@
+/*
+ * PIR sensor tester
+ */
+ 
+int inputPin = 2;               // choose the input pin (for PIR sensor)
+int pirState = LOW;             // we start, assuming no motion detected
+int val = 0;                    // variable for reading the pin status
 int ledPin = 13;
 //led for visualization (use 13 for built-in led)
 
@@ -26,19 +33,45 @@ int speakerPin = 8;
 //frequencies for the tones we're going to use
 //used http://home.mit.bme.hu/~bako/tonecalc/tonecalc.htm to get these
 
-void setup()    
-{    
-  pinMode(ledPin, OUTPUT);
+   
+ 
+void setup() {
+  pinMode(ledPin, OUTPUT);      // declare LED as output
+  pinMode(inputPin, INPUT);     // declare sensor as input
+
   // sets the ledPin to be an output
   pinMode(speakerPin, OUTPUT);  
   //sets the speakerPin to be an output
-}    
-     
-void loop()   // run over and over again
-{
-  march();
-}    
-     
+  
+  Serial.begin(9600);
+}
+ 
+void loop(){
+  val = digitalRead(inputPin);  // read input value
+  Serial.print("Motion detected Value:");
+  Serial.println(val);
+  if (val == HIGH) {            // check if the input is HIGH
+    digitalWrite(ledPin, HIGH);  // turn LED ON
+    if (pirState == LOW) {
+      // we have just turned on
+      Serial.println("Motion detected!");
+      // We only want to print on the output change, not state
+      pirState = HIGH;
+      march();
+    }
+  } else {
+    digitalWrite(ledPin, LOW); // turn LED OFF
+    if (pirState == HIGH){
+      // we have just turned of
+      Serial.println("Motion ended!");
+      // We only want to print on the output change, not state
+      pirState = LOW;
+    }
+  }
+}
+
+
+
 void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)
 { 
     digitalWrite(ledPin, HIGH);  
